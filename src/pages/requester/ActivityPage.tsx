@@ -1,0 +1,11 @@
+import { CalendarClock, CircleOff, ClipboardCheck, PackageOpen, Star } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ErrandCard } from "../../components/cards/ErrandCard";
+import { CompletionModal } from "../../components/feedback/CompletionModal";
+import { Button, EmptyState, PageHeader, SearchInput, Tabs } from "../../components/ui";
+import { errands } from "../../data/mockData";
+import { useAppStore } from "../../store/appStore";
+
+type ActivityTab="active"|"upcoming"|"completed"|"cancelled";
+export function ActivityPage(){const [tab,setTab]=useState<ActivityTab>("active");const [search,setSearch]=useState("");const [rate,setRate]=useState(false);const nav=useNavigate();const {addToast}=useAppStore();const filtered=errands.filter(e=>e.status===tab&&(e.title+e.pickup+e.destination).toLowerCase().includes(search.toLowerCase()));const icons={active:<PackageOpen/>,upcoming:<CalendarClock/>,completed:<ClipboardCheck/>,cancelled:<CircleOff/>};return <div className="standard-page"><PageHeader eyebrow="Everything in one place" title="Your activity" action={<Button onClick={()=>nav("/post")}>Post an errand</Button>}/><div className="activity-toolbar"><Tabs value={tab} onChange={setTab} options={[{value:"active",label:"Active",count:1},{value:"upcoming",label:"Upcoming",count:1},{value:"completed",label:"Completed",count:1},{value:"cancelled",label:"Cancelled",count:1}]}/><SearchInput value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search activity"/></div>{filtered.length?<div className="activity-grid">{filtered.map(errand=><div key={errand.id} className="activity-wrap"><ErrandCard errand={errand} onRepeat={tab==="completed"?()=>{addToast("Previous details copied.");nav("/post")}:undefined}/>{tab==="completed"&&<Button variant="ghost" className="rate-inline" icon={<Star size={16}/>} onClick={()=>setRate(true)}>Rate runner</Button>}</div>)}</div>:<EmptyState icon={icons[tab]} title={`No ${tab} errands`} description={tab==="active"?"No errands yet. Post something and we’ll find someone nearby.":`Your ${tab} errands will appear here.`} action={tab==="active"?<Button onClick={()=>nav("/post")}>Post your first errand</Button>:undefined}/>}<CompletionModal open={rate} onClose={()=>setRate(false)}/></div>}

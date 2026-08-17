@@ -1,0 +1,23 @@
+import { motion } from "framer-motion";
+import { ArrowLeft, Clock3, MapPin, Radar, RotateCcw, UsersRound, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { RunnerCard } from "../../components/cards/RunnerCard";
+import { MockMap } from "../../components/maps/MockMap";
+import { Badge, Button, Card, IconButton, Modal, SegmentedControl } from "../../components/ui";
+import { runners } from "../../data/mockData";
+import { useAppStore } from "../../store/appStore";
+
+type Sort = "recommended" | "cheapest" | "fastest" | "rated";
+
+export function OffersPage() {
+  const navigate = useNavigate(); const { selectRunner, addToast } = useAppStore();
+  const [count,setCount]=useState(0); const [sort,setSort]=useState<Sort>("recommended"); const [cancel,setCancel]=useState(false);
+  useEffect(()=>{ const a=window.setTimeout(()=>setCount(1),1400); const b=window.setTimeout(()=>setCount(3),3000); const c=window.setTimeout(()=>setCount(4),4800); return()=>[a,b,c].forEach(clearTimeout); },[]);
+  const shown=useMemo(()=>{const items=[...runners.slice(0,count)]; if(sort==="cheapest")items.sort((a,b)=>a.offer-b.offer);if(sort==="fastest")items.sort((a,b)=>parseInt(a.eta)-parseInt(b.eta));if(sort==="rated")items.sort((a,b)=>b.rating-a.rating);return items;},[count,sort]);
+  const accept=(runner:typeof runners[number])=>{selectRunner(runner);addToast(`${runner.name} selected.`);navigate("/tracking/errand-1");};
+  if(count===0) return <div className="matching-page"><div className="matching-map"><MockMap variant="matching"/><IconButton label="Go back" className="map-back" onClick={()=>navigate(-1)}><ArrowLeft size={20}/></IconButton></div><motion.section className="matching-sheet" initial={{y:80,opacity:0}} animate={{y:0,opacity:1}}><div className="sheet-handle"/><motion.div className="matching-icon" animate={{boxShadow:["0 0 0 0 rgba(22,199,132,.18)","0 0 0 18px rgba(22,199,132,0)"]}} transition={{repeat:Infinity,duration:1.8}}><Radar size={25}/></motion.div><Badge tone="green" dot>Search is live</Badge><h1>Finding runners nearby…</h1><p>We’re sharing your errand with trusted runners around Westlands.</p><div className="matching-stats"><span><UsersRound size={18}/><b>26 available</b><small>within 5 km</small></span><span><Clock3 size={18}/><b>~ 2 min</b><small>avg. response</small></span></div><Button variant="ghost" onClick={()=>setCancel(true)}>Cancel search</Button></motion.section><CancelModal open={cancel} close={()=>setCancel(false)} confirm={()=>navigate("/activity")}/></div>;
+  return <div className="offers-page"><header className="offers-header"><div><IconButton label="Back" onClick={()=>navigate(-1)}><ArrowLeft size={20}/></IconButton><div><Badge tone="green" dot>{count < 4 ? `${count} new offer${count>1?"s":""}` : "4 runners responded"}</Badge><h1>Choose your runner</h1><p>Compare offers for your delivery to Kilimani.</p></div></div><Button variant="ghost" onClick={()=>setCancel(true)} icon={<X size={17}/>}>Cancel search</Button></header><div className="offers-layout"><section className="offers-list"><SegmentedControl value={sort} onChange={setSort} options={[{value:"recommended",label:"Recommended"},{value:"cheapest",label:"Cheapest"},{value:"fastest",label:"Fastest"},{value:"rated",label:"Highest rated"}]} compact/><div className="offer-cards">{shown.map((runner,index)=><motion.div key={runner.id} initial={{opacity:0,y:22}} animate={{opacity:1,y:0}}><RunnerCard runner={runner} recommended={sort==="recommended"&&index===0} onAccept={()=>accept(runner)}/></motion.div>)}</div>{count<4&&<Card className="waiting-card"><span className="spinner dark"/><div><b>Waiting for more offers</b><p>We’ll add them here as runners respond.</p></div></Card>}</section><aside className="offers-map"><MockMap variant="nearby" showSearch/><Card className="errand-map-summary"><Badge tone="neutral">Pickup & Delivery</Badge><h3>Charger delivery</h3><p><MapPin size={15}/> Sarit Centre → Yaya Centre</p><div><span>6.4 km</span><span>Budget: KES 750</span></div></Card></aside></div><CancelModal open={cancel} close={()=>setCancel(false)} confirm={()=>navigate("/activity")}/></div>;
+}
+
+function CancelModal({open,close,confirm}:{open:boolean;close:()=>void;confirm:()=>void}){return <Modal open={open} onClose={close} title="Cancel runner search?" footer={<><Button variant="ghost" onClick={close}>Keep searching</Button><Button variant="danger" onClick={confirm}>Cancel search</Button></>}><div className="confirm-copy"><RotateCcw size={25}/><p>Your errand details will stay saved. You can restart the search from Activity at any time.</p></div></Modal>}
