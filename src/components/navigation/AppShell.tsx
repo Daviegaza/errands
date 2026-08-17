@@ -86,7 +86,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const desktopItems = mode === "requester" ? requesterDesktop : runnerDesktop;
   const mobileItems = mode === "requester" ? requesterMobile : runnerMobile;
   return (
-    <div className="app-shell">
+    <div className={cn("app-shell", (location.pathname === "/" || location.pathname === "/runner") && "app-shell-home")}>
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <aside className="sidebar">
         <div className="sidebar-top"><Brand /><RoleSwitcher /></div>
