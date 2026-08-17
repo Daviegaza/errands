@@ -101,7 +101,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="mobile-header"><Brand /><div><RoleSwitcher compact /><NavLink to="/notifications" className="mobile-bell" aria-label="Notifications"><Bell size={20} />{unreadNotifications > 0 && <span>{unreadNotifications}</span>}</NavLink></div></header>
 
       <main className="app-main" id="main-content">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout" initial={false}>
           <motion.div key={location.pathname} className="page-stage" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }} transition={{ duration: .22, ease: "easeOut" }}>
             {children}
           </motion.div>
