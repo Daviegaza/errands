@@ -9,7 +9,7 @@ export function ChatThread() {
   const [text, setText] = useState("");
   const [typing, setTyping] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
-  useEffect(() => endRef.current?.scrollIntoView({ behavior: "smooth" }), [messages, typing]);
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, typing]);
   const send = () => {
     if (!text.trim()) return;
     const sent = text.trim();

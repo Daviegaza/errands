@@ -166,7 +166,7 @@ export function Modal({ open, onClose, title, children, footer }: { open: boolea
 }
 
 export function ListRow({ icon, title, detail, onClick, trailing }: { icon?: ReactNode; title: string; detail?: string; onClick?: () => void; trailing?: ReactNode }) {
-  return <button type="button" className="list-row" onClick={onClick}><span className="list-icon">{icon}</span><span><b>{title}</b>{detail && <small>{detail}</small>}</span>{trailing || <ChevronRight size={18} />}</button>;
+  return <div className="list-row" onClick={onClick} role={onClick ? "button" : undefined} tabIndex={onClick ? 0 : undefined} onKeyDown={onClick ? (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); onClick(); } } : undefined}><span className="list-icon">{icon}</span><span><b>{title}</b>{detail && <small>{detail}</small>}</span>{trailing || <ChevronRight size={18} />}</div>;
 }
 
 export function ToastViewport() {
