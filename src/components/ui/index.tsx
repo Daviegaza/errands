@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronRight, Search, Star, X } from "lucide-react";
-import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes, CSSProperties, InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from "react";
 import { useEffect, useRef } from "react";
 import { useAppStore } from "../../store/appStore";
 
@@ -129,7 +129,7 @@ export function EmptyState({ icon, title, description, action }: { icon: ReactNo
   return <div className="empty-state"><div className="empty-icon">{icon}</div><h3>{title}</h3><p>{description}</p>{action}</div>;
 }
 
-export function Skeleton({ className }: { className?: string }) { return <div className={cn("skeleton", className)} />; }
+export function Skeleton({ className, style }: { className?: string; style?: CSSProperties }) { return <div className={cn("skeleton", className)} style={style} />; }
 
 export function Modal({ open, onClose, title, children, footer }: { open: boolean; onClose: () => void; title: string; children: ReactNode; footer?: ReactNode }) {
   const modalRef = useRef<HTMLElement>(null);
