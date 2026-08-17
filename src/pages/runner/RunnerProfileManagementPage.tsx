@@ -1,6 +1,6 @@
-import { Bike, Car, CheckCircle2, ChevronRight, CircleHelp, Footprints, LogOut, MapPin, ShieldCheck, SlidersHorizontal, UserRound, WalletCards } from "lucide-react";
+import { Bike, Car, CheckCircle2, CircleHelp, Footprints, LogOut, MapPin, ShieldCheck, SlidersHorizontal, WalletCards } from "lucide-react";
 import { useState } from "react";
-import { Avatar, Badge, Button, Card, Input, ListRow, PageHeader, Progress, SegmentedControl, Switch, cn } from "../../components/ui";
+import { Avatar, Badge, Button, Card, ListRow, PageHeader, Progress, Switch, cn } from "../../components/ui";
 import { useAppStore } from "../../store/appStore";
 
 type Transport="Walking"|"Bicycle"|"Motorbike"|"Car";

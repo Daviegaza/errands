@@ -2,7 +2,7 @@ import { ArrowLeft, CheckCheck, ChevronRight, MessageCircle, MoreVertical, Phone
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ChatThread } from "../../components/chat/ChatThread";
-import { Avatar, Badge, Button, EmptyState, IconButton, PageHeader, SearchInput, cn } from "../../components/ui";
+import { Avatar, Button, EmptyState, IconButton, PageHeader, SearchInput, cn } from "../../components/ui";
 import { runners } from "../../data/mockData";
 import { useAppStore } from "../../store/appStore";
 

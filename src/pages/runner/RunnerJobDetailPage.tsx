@@ -1,4 +1,4 @@
-import { ArrowLeft, Camera, Check, CheckCircle2, ChevronRight, Clock3, MessageCircle, Navigation, PackageCheck, Phone, ShieldCheck, Star } from "lucide-react";
+import { ArrowLeft, Camera, Check, CheckCircle2, ChevronRight, Clock3, MessageCircle, Navigation, Phone, ShieldCheck, Star } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MockMap } from "../../components/maps/MockMap";

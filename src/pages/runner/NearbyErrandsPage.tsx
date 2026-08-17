@@ -1,8 +1,8 @@
-import { Compass, Filter, List, Map, MapPin, Search, SlidersHorizontal } from "lucide-react";
+import { Compass, MapPin, Search, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 import { ErrandCard } from "../../components/cards/ErrandCard";
 import { MockMap } from "../../components/maps/MockMap";
-import { Badge, Button, Card, EmptyState, Modal, PageHeader, SearchInput, SegmentedControl, Switch } from "../../components/ui";
+import { Badge, Button, EmptyState, Modal, PageHeader, SearchInput, SegmentedControl, Switch } from "../../components/ui";
 import { errands } from "../../data/mockData";
 import { useAppStore } from "../../store/appStore";
 

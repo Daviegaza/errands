@@ -1,4 +1,4 @@
-import { BellRing, ChevronRight, CircleHelp, CreditCard, Fingerprint, Home, LockKeyhole, LogOut, Mail, MapPin, Phone, ShieldCheck, SlidersHorizontal, UserRound, WalletCards } from "lucide-react";
+import { BellRing, CircleHelp, CreditCard, Fingerprint, Home, LockKeyhole, LogOut, Mail, MapPin, Phone, ShieldCheck, SlidersHorizontal, UserRound, WalletCards } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, Badge, Button, Card, Input, ListRow, Modal, PageHeader, Switch } from "../../components/ui";

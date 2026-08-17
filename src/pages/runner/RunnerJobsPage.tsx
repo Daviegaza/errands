@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, CalendarClock, CheckCircle2, PackageOpen } from "lucide-react";
+import { CalendarClock, CheckCircle2, PackageOpen } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ErrandCard } from "../../components/cards/ErrandCard";

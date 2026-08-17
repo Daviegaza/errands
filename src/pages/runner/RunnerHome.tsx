@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Award, Bike, CheckCircle2, ChevronRight, Clock3, Compass, MapPin, Navigation, Power, Star, Target, TrendingUp, Zap } from "lucide-react";
+import { Award, CheckCircle2, ChevronRight, Clock3, MapPin, Navigation, Power, Star, Target, TrendingUp, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ErrandCard } from "../../components/cards/ErrandCard";
 import { Avatar, Badge, Button, Card, Progress, StatCard, Switch } from "../../components/ui";
