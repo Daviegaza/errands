@@ -15,8 +15,9 @@ const contentTypes = {
 const env = {
   ASSETS: {
     async fetch(request) {
-      const pathname = decodeURIComponent(new URL(request.url).pathname);
-      if (pathname === "/") return new Response("Not found", { status: 404 });
+      let pathname = decodeURIComponent(new URL(request.url).pathname);
+      if (pathname === "/activity") return Response.redirect("https://tuma.test/", 302);
+      if (pathname === "/") pathname = "/index.html";
       const filePath = resolve(assetRoot, `.${pathname}`);
       if (!filePath.startsWith(assetRoot)) return new Response("Not found", { status: 404 });
 
