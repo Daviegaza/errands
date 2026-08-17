@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   MessageCircle,
   Plus,
+  Radio,
   ShieldCheck,
   UserRound,
   WalletCards,
@@ -81,23 +82,25 @@ function RoleSwitcher({ compact = false }: { compact?: boolean }) {
 export function AppShell({ children }: { children: ReactNode }) {
   const { mode, unreadNotifications } = useAppStore();
   const location = useLocation();
+  const navigate = useNavigate();
   const desktopItems = mode === "requester" ? requesterDesktop : runnerDesktop;
   const mobileItems = mode === "requester" ? requesterMobile : runnerMobile;
   return (
     <div className="app-shell">
+      <a className="skip-link" href="#main-content">Skip to main content</a>
       <aside className="sidebar">
         <div className="sidebar-top"><Brand /><RoleSwitcher /></div>
         <nav className="sidebar-nav" aria-label={`${mode} navigation`}>
           <span className="nav-caption">{mode === "requester" ? "Personal" : "Runner workspace"}</span>
           {desktopItems.map((item) => <NavLink key={item.to} to={item.to} end={item.to === "/" || item.to === "/runner"} className={({ isActive }) => cn("nav-item", isActive && "nav-item-active")}><item.icon size={19} /><span>{item.label}</span>{item.label === "Notifications" && unreadNotifications > 0 && <b>{unreadNotifications}</b>}</NavLink>)}
         </nav>
-        <div className="sidebar-trust"><ShieldCheck size={18} /><div><b>Protected by Tuma</b><small>Support available 24/7</small></div></div>
-        <div className="sidebar-user"><Avatar initials="AN" size="sm" color="#4B5E52" online /><div><b>Amara N.</b><small>Verified account</small></div><IconButton label="Notifications"><Bell size={18} /></IconButton></div>
+        <button className="sidebar-trust" onClick={() => navigate(mode === "runner" ? "/runner/jobs" : "/activity")}><ShieldCheck size={18} /><div><b>Tuma protection</b><small>Every errand is monitored</small></div><Radio size={14} /></button>
+        <div className="sidebar-user"><Avatar initials="AN" size="sm" color="#4B5E52" online /><div><b>Amara N.</b><small>Verified account</small></div><IconButton label="Notifications" onClick={() => navigate("/notifications")}><Bell size={18} /></IconButton></div>
       </aside>
 
       <header className="mobile-header"><Brand /><div><RoleSwitcher compact /><NavLink to="/notifications" className="mobile-bell" aria-label="Notifications"><Bell size={20} />{unreadNotifications > 0 && <span>{unreadNotifications}</span>}</NavLink></div></header>
 
-      <main className="app-main">
+      <main className="app-main" id="main-content">
         <AnimatePresence mode="wait">
           <motion.div key={location.pathname} className="page-stage" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }} transition={{ duration: .22, ease: "easeOut" }}>
             {children}

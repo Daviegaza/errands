@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Bike, BellRing, CheckCircle2, ChevronRight, Clock3, LocateFixed, MapPin, Navigation, Plus, RefreshCcw, Search, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, Bike, BellRing, CheckCircle2, ChevronRight, Clock3, LocateFixed, MapPin, Navigation, Plus, RefreshCcw, Search, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { categories, errands, runners } from "../../data/mockData";
 import { formatKES } from "../../services/mockApi";
@@ -14,7 +14,7 @@ export function RequesterHome() {
 
     <div className="home-command-grid">
       <section className="home-hero">
-        <div className="hero-copy"><Badge tone="green" dot>26 runners nearby</Badge><h2>Get it done without going yourself.</h2><p>Tell us what needs moving, buying or collecting. Trusted help is minutes away.</p><button className="hero-search" onClick={() => navigate("/post")}><Search size={20} /><span>What do you need done?</span><i><ArrowRight size={18} /></i></button><div className="hero-actions"><Button size="lg" icon={<Plus size={19} />} onClick={() => navigate("/post")}>Post an errand</Button><button className="location-status"><span><LocateFixed size={17} /></span><b>Using current location</b><small>Kilimani</small></button></div></div>
+        <div className="hero-copy"><Badge tone="green" dot>26 runners nearby</Badge><h2>Your day, <em>moving forward.</em></h2><p>Anything picked up, bought or delivered by a trusted local runner—without putting your day on pause.</p><button className="hero-search" onClick={() => navigate("/post")}><Search size={20} /><span>What do you need done?</span><i><ArrowRight size={18} /></i></button><div className="hero-actions"><Button size="lg" icon={<Plus size={19} />} onClick={() => navigate("/post")}>Post an errand</Button><button className="location-status"><span><LocateFixed size={17} /></span><b>Using current location</b><small>Kilimani</small></button></div><div className="hero-proof"><span><ShieldCheck size={14}/>Verified runners</span><span><CheckCircle2 size={14}/>Pay after choosing</span></div></div>
         <div className="hero-visual" aria-hidden="true"><div className="orbit orbit-one" /><div className="orbit orbit-two" /><motion.div className="hero-pin pin-a" animate={{ y: [0,-5,0] }} transition={{ repeat: Infinity, duration: 2.8 }}><Bike size={20} /></motion.div><motion.div className="hero-pin pin-b" animate={{ y: [0,5,0] }} transition={{ repeat: Infinity, duration: 3.2 }}><Navigation size={18} /></motion.div><div className="hero-route"><span /><i /><span /></div><div className="availability-card"><div><span className="live-dot" />Available now</div><strong>~ 4 min</strong><small>Average response</small></div></div>
       </section>
 

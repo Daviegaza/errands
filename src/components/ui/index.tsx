@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronRight, Search, Star, X } from "lucide-react";
 import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAppStore } from "../../store/appStore";
 
 export const cn = (...classes: Array<string | false | null | undefined>) => classes.filter(Boolean).join(" ");
@@ -17,6 +17,7 @@ export function Button({ className, variant = "primary", size = "md", icon, load
   return (
     <button
       className={cn("btn", `btn-${variant}`, `btn-${size}`, className)}
+      type={props.type || "button"}
       disabled={props.disabled || loading}
       {...props}
     >
@@ -28,7 +29,7 @@ export function Button({ className, variant = "primary", size = "md", icon, load
 
 export function IconButton({ label, className, children, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { label: string }) {
   return (
-    <button className={cn("icon-button", className)} aria-label={label} {...props}>
+    <button type={props.type || "button"} className={cn("icon-button", className)} aria-label={label} {...props}>
       {children}
     </button>
   );
@@ -88,7 +89,7 @@ export function SegmentedControl<T extends string>({ options, value, onChange, c
   return (
     <div className={cn("segmented", compact && "segmented-compact")} role="tablist">
       {options.map((option) => (
-        <button key={option.value} className={cn("segment", value === option.value && "segment-active")} onClick={() => onChange(option.value)} role="tab" aria-selected={value === option.value}>
+        <button type="button" key={option.value} className={cn("segment", value === option.value && "segment-active")} onClick={() => onChange(option.value)} role="tab" aria-selected={value === option.value}>
           {option.label}
         </button>
       ))}
@@ -100,7 +101,7 @@ export function Tabs<T extends string>({ options, value, onChange }: { options: 
   return (
     <div className="tabs" role="tablist">
       {options.map((option) => (
-        <button key={option.value} onClick={() => onChange(option.value)} className={cn("tab", value === option.value && "tab-active")} role="tab" aria-selected={value === option.value}>
+        <button type="button" key={option.value} onClick={() => onChange(option.value)} className={cn("tab", value === option.value && "tab-active")} role="tab" aria-selected={value === option.value}>
           {option.label}{option.count !== undefined && <span>{option.count}</span>}
         </button>
       ))}
@@ -109,7 +110,7 @@ export function Tabs<T extends string>({ options, value, onChange }: { options: 
 }
 
 export function Switch({ checked, onChange, label }: { checked: boolean; onChange: () => void; label: string }) {
-  return <button className={cn("switch", checked && "switch-on")} onClick={onChange} role="switch" aria-checked={checked} aria-label={label}><motion.span layout /></button>;
+  return <button type="button" className={cn("switch", checked && "switch-on")} onClick={onChange} role="switch" aria-checked={checked} aria-label={label}><motion.span layout /></button>;
 }
 
 export function Progress({ value, label }: { value: number; label?: string }) {
@@ -131,16 +132,29 @@ export function EmptyState({ icon, title, description, action }: { icon: ReactNo
 export function Skeleton({ className }: { className?: string }) { return <div className={cn("skeleton", className)} />; }
 
 export function Modal({ open, onClose, title, children, footer }: { open: boolean; onClose: () => void; title: string; children: ReactNode; footer?: ReactNode }) {
+  const modalRef = useRef<HTMLElement>(null);
   useEffect(() => {
     if (!open) return;
-    const close = (event: KeyboardEvent) => event.key === "Escape" && onClose();
-    window.addEventListener("keydown", close);
-    return () => window.removeEventListener("keydown", close);
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.requestAnimationFrame(() => modalRef.current?.querySelector<HTMLElement>("button, input, textarea, select, [tabindex]:not([tabindex='-1'])")?.focus());
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+      if (event.key !== "Tab" || !modalRef.current) return;
+      const focusable = Array.from(modalRef.current.querySelectorAll<HTMLElement>("button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex='-1'])"));
+      if (!focusable.length) return;
+      const first = focusable[0]; const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => { window.removeEventListener("keydown", handleKey); document.body.style.overflow = previousOverflow; previousFocus?.focus(); };
   }, [open, onClose]);
   return (
     <AnimatePresence>
       {open && <motion.div className="modal-backdrop" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={onClose}>
-        <motion.section role="dialog" aria-modal="true" aria-label={title} className="modal" initial={{ opacity: 0, y: 28, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 28, scale: .98 }} transition={{ type: "spring", damping: 28, stiffness: 340 }} onMouseDown={(event) => event.stopPropagation()}>
+        <motion.section ref={modalRef} role="dialog" aria-modal="true" aria-label={title} className="modal" initial={{ opacity: 0, y: 28, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 28, scale: .98 }} transition={{ type: "spring", damping: 28, stiffness: 340 }} onMouseDown={(event) => event.stopPropagation()}>
           <div className="sheet-handle" />
           <header className="modal-head"><h2>{title}</h2><IconButton label="Close" onClick={onClose}><X size={20} /></IconButton></header>
           <div className="modal-body">{children}</div>
@@ -152,12 +166,12 @@ export function Modal({ open, onClose, title, children, footer }: { open: boolea
 }
 
 export function ListRow({ icon, title, detail, onClick, trailing }: { icon?: ReactNode; title: string; detail?: string; onClick?: () => void; trailing?: ReactNode }) {
-  return <button className="list-row" onClick={onClick}><span className="list-icon">{icon}</span><span><b>{title}</b>{detail && <small>{detail}</small>}</span>{trailing || <ChevronRight size={18} />}</button>;
+  return <button type="button" className="list-row" onClick={onClick}><span className="list-icon">{icon}</span><span><b>{title}</b>{detail && <small>{detail}</small>}</span>{trailing || <ChevronRight size={18} />}</button>;
 }
 
 export function ToastViewport() {
   const { toasts, removeToast } = useAppStore();
-  return <div className="toast-viewport"><AnimatePresence>{toasts.map((toast) => <motion.button key={toast.id} className={cn("toast", `toast-${toast.tone}`)} initial={{ opacity: 0, y: -18, scale: .96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -12, scale: .96 }} onClick={() => removeToast(toast.id)}><span><Check size={16} /></span>{toast.message}<X size={15} /></motion.button>)}</AnimatePresence></div>;
+  return <div className="toast-viewport" role="status" aria-live="polite"><AnimatePresence>{toasts.map((toast) => <motion.button type="button" key={toast.id} className={cn("toast", `toast-${toast.tone}`)} initial={{ opacity: 0, y: -18, scale: .96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -12, scale: .96 }} onClick={() => removeToast(toast.id)}><span><Check size={16} /></span>{toast.message}<X size={15} /></motion.button>)}</AnimatePresence></div>;
 }
 
 export function PageHeader({ title, eyebrow, action, back }: { title: string; eyebrow?: string; action?: ReactNode; back?: ReactNode }) {

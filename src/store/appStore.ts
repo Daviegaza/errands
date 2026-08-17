@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { initialMessages, runners } from "../data/mockData";
 import type { ChatMessage, Mode, PostDraft, Runner, ToastItem } from "../types";
 
@@ -39,7 +40,7 @@ interface AppState {
   markNotificationsRead: () => void;
 }
 
-export const useAppStore = create<AppState>((set, get) => ({
+export const useAppStore = create<AppState>()(persist((set, get) => ({
   mode: "requester",
   online: true,
   draft: defaultDraft,
@@ -70,4 +71,16 @@ export const useAppStore = create<AppState>((set, get) => ({
         : [...state.savedRunnerIds, id],
     })),
   markNotificationsRead: () => set({ unreadNotifications: 0 }),
+}), {
+  name: "tuma-app-state",
+  storage: createJSONStorage(() => localStorage),
+  partialize: (state) => ({
+    mode: state.mode,
+    online: state.online,
+    draft: state.draft,
+    selectedRunner: state.selectedRunner,
+    activeStatus: state.activeStatus,
+    savedRunnerIds: state.savedRunnerIds,
+    unreadNotifications: state.unreadNotifications,
+  }),
 }));
