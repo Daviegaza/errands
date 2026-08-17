@@ -1,7 +1,11 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { timelineStatuses } from "../components/errand/Timeline";
 import { initialMessages, runners } from "../data/mockData";
 import type { ChatMessage, Mode, PostDraft, Runner, ToastItem } from "../types";
+
+export const maxStatus = timelineStatuses.length - 1;
+let toastId = 0;
 
 const defaultDraft: PostDraft = {
   task: "Pick up my laptop charger from Westlands and bring it to Kilimani.",
@@ -21,7 +25,8 @@ interface AppState {
   online: boolean;
   draft: PostDraft;
   selectedRunner: Runner | null;
-  activeStatus: number;
+  trackingStatus: number;
+  jobStatus: number;
   messages: ChatMessage[];
   toasts: ToastItem[];
   savedRunnerIds: string[];
@@ -31,8 +36,8 @@ interface AppState {
   updateDraft: (data: Partial<PostDraft>) => void;
   resetDraft: () => void;
   selectRunner: (runner: Runner) => void;
-  advanceStatus: () => void;
-  setStatus: (status: number) => void;
+  advanceTrackingStatus: () => void;
+  setJobStatus: (status: number) => void;
   addMessage: (message: ChatMessage) => void;
   addToast: (message: string, tone?: ToastItem["tone"]) => void;
   removeToast: (id: number) => void;
@@ -45,7 +50,8 @@ export const useAppStore = create<AppState>()(persist((set, get) => ({
   online: true,
   draft: defaultDraft,
   selectedRunner: runners[0],
-  activeStatus: 4,
+  trackingStatus: 4,
+  jobStatus: 0,
   messages: initialMessages,
   toasts: [],
   savedRunnerIds: ["brian-kamau", "faith-njeri"],
@@ -54,12 +60,12 @@ export const useAppStore = create<AppState>()(persist((set, get) => ({
   toggleOnline: () => set((state) => ({ online: !state.online })),
   updateDraft: (data) => set((state) => ({ draft: { ...state.draft, ...data } })),
   resetDraft: () => set({ draft: defaultDraft }),
-  selectRunner: (selectedRunner) => set({ selectedRunner, activeStatus: 0 }),
-  advanceStatus: () => set((state) => ({ activeStatus: Math.min(7, state.activeStatus + 1) })),
-  setStatus: (activeStatus) => set({ activeStatus }),
+  selectRunner: (selectedRunner) => set({ selectedRunner, trackingStatus: 0 }),
+  advanceTrackingStatus: () => set((state) => ({ trackingStatus: Math.min(maxStatus, state.trackingStatus + 1) })),
+  setJobStatus: (jobStatus) => set({ jobStatus }),
   addMessage: (message) => set((state) => ({ messages: [...state.messages, message] })),
   addToast: (message, tone = "success") => {
-    const id = Date.now();
+    const id = ++toastId;
     set((state) => ({ toasts: [...state.toasts, { id, message, tone }] }));
     window.setTimeout(() => get().removeToast(id), 3200);
   },
@@ -79,7 +85,8 @@ export const useAppStore = create<AppState>()(persist((set, get) => ({
     online: state.online,
     draft: state.draft,
     selectedRunner: state.selectedRunner,
-    activeStatus: state.activeStatus,
+    trackingStatus: state.trackingStatus,
+    jobStatus: state.jobStatus,
     savedRunnerIds: state.savedRunnerIds,
     unreadNotifications: state.unreadNotifications,
   }),
