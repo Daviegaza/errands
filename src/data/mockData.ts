@@ -10,15 +10,15 @@ import {
   Sparkles,
 } from "lucide-react";
 
-export const categories: { name: Category; icon: typeof ShoppingBasket; color: string }[] = [
-  { name: "Shopping", icon: ShoppingBasket, color: "#DCFCE7" },
-  { name: "Pickup & Delivery", icon: PackageCheck, color: "#E0F2FE" },
-  { name: "Store Run", icon: Store, color: "#FEF3C7" },
-  { name: "Documents", icon: FileText, color: "#EDE9FE" },
-  { name: "Pharmacy", icon: Cross, color: "#FEE2E2" },
-  { name: "Laundry", icon: Shirt, color: "#E0E7FF" },
-  { name: "Small Moving", icon: Sofa, color: "#FFEDD5" },
-  { name: "Custom Errand", icon: Sparkles, color: "#F1F5F9" },
+export const categories: { name: Category; icon: typeof ShoppingBasket; color: string; image: string }[] = [
+  { name: "Shopping", icon: ShoppingBasket, color: "#E8B04A", image: "/images/tiles/shopping.png" },
+  { name: "Pickup & Delivery", icon: PackageCheck, color: "#4A7FA7", image: "/images/tiles/delivery.png" },
+  { name: "Store Run", icon: Store, color: "#D06B4D", image: "/images/tiles/shopping.png" },
+  { name: "Documents", icon: FileText, color: "#587363", image: "/images/tiles/delivery.png" },
+  { name: "Pharmacy", icon: Cross, color: "#C95754", image: "/images/tiles/pharmacy.png" },
+  { name: "Laundry", icon: Shirt, color: "#5B78A6", image: "/images/tiles/laundry.png" },
+  { name: "Small Moving", icon: Sofa, color: "#A56B42", image: "/images/tiles/moving.png" },
+  { name: "Custom Errand", icon: Sparkles, color: "#6D5B7B", image: "/images/tiles/moving.png" },
 ];
 
 export const runners: Runner[] = [
@@ -26,6 +26,7 @@ export const runners: Runner[] = [
     id: "brian-kamau",
     name: "Brian Kamau",
     initials: "BK",
+    photo: "/images/tiles/runner-brian.png",
     rating: 4.96,
     completed: 328,
     distance: "0.8 km away",
@@ -43,6 +44,7 @@ export const runners: Runner[] = [
     id: "aisha-hassan",
     name: "Aisha Hassan",
     initials: "AH",
+    photo: "/images/tiles/runner-aisha.png",
     rating: 4.91,
     completed: 214,
     distance: "1.2 km away",
@@ -60,6 +62,7 @@ export const runners: Runner[] = [
     id: "kevin-mwangi",
     name: "Kevin Mwangi",
     initials: "KM",
+    photo: "/images/tiles/runner-brian.png",
     rating: 4.88,
     completed: 461,
     distance: "1.9 km away",
@@ -77,6 +80,7 @@ export const runners: Runner[] = [
     id: "faith-njeri",
     name: "Faith Njeri",
     initials: "FN",
+    photo: "/images/tiles/runner-faith.png",
     rating: 4.99,
     completed: 176,
     distance: "2.3 km away",

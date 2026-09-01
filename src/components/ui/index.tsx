@@ -52,10 +52,10 @@ export function Badge({ children, tone = "neutral", dot }: { children: ReactNode
   return <span className={cn("badge", `badge-${tone}`)}>{dot && <span className="badge-dot" />}{children}</span>;
 }
 
-export function Avatar({ initials, size = "md", color = "#315b4b", online = false }: { initials: string; size?: "sm" | "md" | "lg" | "xl"; color?: string; online?: boolean }) {
+export function Avatar({ initials, size = "md", color = "#315b4b", online = false, src }: { initials: string; size?: "sm" | "md" | "lg" | "xl"; color?: string; online?: boolean; src?: string }) {
   return (
-    <span className={cn("avatar", `avatar-${size}`)} style={{ background: `linear-gradient(145deg, ${color}, #101214)` }} aria-label={`Avatar ${initials}`}>
-      {initials}
+    <span className={cn("avatar", `avatar-${size}`, src && "avatar-photo")} style={{ background: color }} aria-label={`Avatar ${initials}`}>
+      {src ? <img src={src} alt="" /> : initials}
       {online && <span className="online-dot" />}
     </span>
   );

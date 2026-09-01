@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import {
   ArrowRight,
   Bell,
-  Check,
   ChevronRight,
   Clock3,
   HeartHandshake,
@@ -108,12 +107,9 @@ export function RequesterHome() {
               <Badge tone="green" dot>9 min</Badge>
             </div>
             <div className="story-map" aria-hidden="true">
-              <i className="story-road road-one" /><i className="story-road road-two" /><i className="story-road road-three" />
-              <span className="story-start"><Check size={14} /></span>
-              <span className="story-route" />
-              <motion.span className="story-runner" animate={{ y: [0, -5, 0] }} transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}><Avatar initials="BK" size="sm" color={runners[0].color} online /></motion.span>
-              <span className="story-home"><MapPin size={16} /></span>
-              <span className="runner-note"><b>Brian</b> is heading your way</span>
+              <motion.img className="story-photo" src="/images/tuma-cartoon-hero.png" alt="" initial={{ scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] }} />
+              <motion.span className="runner-note" animate={{ y: [0, -5, 0] }} transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}><Avatar initials="BK" src={runners[0].photo} size="sm" color={runners[0].color} online /><span><b>Brian is moving</b><small>Next update in 2 min</small></span></motion.span>
+              <span className="photo-eta"><Clock3 size={14} /><b>9 min away</b></span>
             </div>
             <div className="story-route-copy">
               <span><small>Picked up</small><b>Sarit Centre</b></span>
@@ -121,7 +117,7 @@ export function RequesterHome() {
               <span><small>Coming to</small><b>Yaya Centre</b></span>
             </div>
             <div className="story-person">
-              <Avatar initials="BK" color={runners[0].color} online />
+              <Avatar initials="BK" src={runners[0].photo} color={runners[0].color} online />
               <span><b>Brian Kamau</b><small><Star size={12} fill="currentColor" /> 4.96 · 328 errands</small></span>
               <strong>{formatKES(750)}</strong>
               <ChevronRight size={18} />
@@ -144,7 +140,7 @@ export function RequesterHome() {
           <div className="human-category-grid">
             {categories.map((category, index) => (
               <motion.button type="button" key={category.name} onClick={() => navigate("/post", { state: { category: category.name } })} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .2 }} transition={{ delay: Math.min(index * .045, .25) }} whileHover={{ y: -6 }} whileTap={{ scale: .98 }}>
-                <span style={{ background: category.color }}><category.icon size={22} /></span>
+                <span className="category-photo"><img src={category.image} alt="" /></span>
                 <div><b>{category.name}</b><small>{categoryNotes[index]}</small></div>
                 <ArrowRight size={17} />
               </motion.button>
@@ -160,7 +156,7 @@ export function RequesterHome() {
           <div className="neighbour-grid">
             {runners.slice(0, 3).map((runner, index) => (
               <motion.article key={runner.id} className="neighbour-card" initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .3 }} transition={{ delay: index * .08 }}>
-                <div className="neighbour-card-top"><Avatar initials={runner.initials} size="lg" color={runner.color} online /><span><b>{runner.name}</b><small><Star size={12} fill="currentColor" /> {runner.rating} · {runner.completed} errands</small></span><Badge tone="green">{runner.eta} away</Badge></div>
+                <div className="neighbour-card-top"><Avatar initials={runner.initials} src={runner.photo} size="lg" color={runner.color} online /><span><b>{runner.name}</b><small><Star size={12} fill="currentColor" /> {runner.rating} · {runner.completed} errands</small></span><Badge tone="green">{runner.eta} away</Badge></div>
                 <blockquote>“{runner.message}”</blockquote>
                 <div className="neighbour-card-bottom"><span>{runner.specialties.slice(0, 2).join(" · ")}</span><button type="button" onClick={() => navigate(`/runners/${runner.id}`)}>Say hello <ArrowRight size={14} /></button></div>
               </motion.article>

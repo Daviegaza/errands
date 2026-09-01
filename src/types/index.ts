@@ -14,6 +14,7 @@ export interface Runner {
   id: string;
   name: string;
   initials: string;
+  photo: string;
   rating: number;
   completed: number;
   distance: string;
