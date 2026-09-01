@@ -7,6 +7,7 @@ import {
   CircleDollarSign,
   Compass,
   Heart,
+  HeartHandshake,
   Home,
   LayoutDashboard,
   MessageCircle,
@@ -15,7 +16,6 @@ import {
   ShieldCheck,
   UserRound,
   WalletCards,
-  Zap,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
@@ -63,7 +63,7 @@ const runnerMobile: NavItem[] = [
 ];
 
 export function Brand({ compact = false }: { compact?: boolean }) {
-  return <div className={cn("brand", compact && "brand-compact")}><span className="brand-mark"><Zap size={19} fill="currentColor" /></span>{!compact && <span>Tuma<small>move life forward</small></span>}</div>;
+  return <div className={cn("brand", compact && "brand-compact")}><span className="brand-mark"><HeartHandshake size={19} /></span>{!compact && <span>Tuma<small>help is close</small></span>}</div>;
 }
 
 function RoleSwitcher({ compact = false }: { compact?: boolean }) {
@@ -74,7 +74,7 @@ function RoleSwitcher({ compact = false }: { compact?: boolean }) {
     navigate(next === "runner" ? "/runner" : "/");
   };
   if (compact) {
-    return <button className="compact-role" onClick={() => setRole(mode === "requester" ? "runner" : "requester")}><Zap size={15} />{mode === "requester" ? "Earn" : "Get help"}</button>;
+    return <button className="compact-role" onClick={() => setRole(mode === "requester" ? "runner" : "requester")}><HeartHandshake size={15} />{mode === "requester" ? "Earn" : "Get help"}</button>;
   }
   return <SegmentedControl value={mode} onChange={setRole} options={[{ value: "requester", label: "Need Help" }, { value: "runner", label: "Earn Money" }]} compact />;
 }
