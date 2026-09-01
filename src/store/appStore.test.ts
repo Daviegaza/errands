@@ -4,7 +4,6 @@ import { maxStatus, useAppStore } from "./appStore";
 
 const initialState = useAppStore.getState();
 
-
 beforeEach(() => {
   useAppStore.setState(initialState, true);
 });
