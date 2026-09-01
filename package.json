@@ -9,6 +9,8 @@
   "scripts": {
     "dev": "vite",
     "build": "node scripts/clean-dist.mjs && tsc -b && vite build && node scripts/build-sites.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:hosting": "node scripts/test-sites-build.mjs",
     "preview": "vite preview"
   },
@@ -17,22 +19,25 @@
     "lucide-react": "^0.468.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-hook-form": "^7.62.0",
     "react-router-dom": "^7.8.1",
-    "recharts": "^3.1.2",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@openai/sites-vite-plugin": "^0.1.0",
     "@tailwindcss/postcss": "^4.1.12",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.6",
     "@types/node": "^22.15.30",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^6.0.2",
     "autoprefixer": "^10.4.21",
+    "jsdom": "^30.0.1",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.12",
     "typescript": "~5.8.3",
-    "vite": "^8.0.13"
+    "vite": "^8.0.13",
+    "vitest": "^4.1.11"
   }
 }
