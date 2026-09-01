@@ -107,7 +107,7 @@ export function RequesterHome() {
               <Badge tone="green" dot>9 min</Badge>
             </div>
             <div className="story-map" aria-hidden="true">
-              <motion.img className="story-photo" src="/images/tuma-cartoon-hero.png" alt="" initial={{ scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] }} />
+              <motion.img className="story-photo" src="/images/tuma-cartoon-hero.webp" alt="" initial={{ scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 1.4, ease: [0.2, 0.8, 0.2, 1] }} />
               <motion.span className="runner-note" animate={{ y: [0, -5, 0] }} transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}><Avatar initials="BK" src={runners[0].photo} size="sm" color={runners[0].color} online /><span><b>Brian is moving</b><small>Next update in 2 min</small></span></motion.span>
               <span className="photo-eta"><Clock3 size={14} /><b>9 min away</b></span>
             </div>
