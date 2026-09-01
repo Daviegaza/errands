@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAppStore } from "../../store/appStore";
 import { IconButton } from "../ui";
 
-export function ChatThread() {
+export function ChatThread({ recipientName = "Brian" }: { recipientName?: string }) {
   const { messages, addMessage, addToast } = useAppStore();
   const [text, setText] = useState("");
   const [typing, setTyping] = useState(false);
@@ -28,6 +28,6 @@ export function ChatThread() {
       {typing && <motion.div className="typing-bubble" initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }}><span/><span/><span/></motion.div>}
       <div ref={endRef} />
     </div>
-    <div className="chat-composer"><div className="composer-tools"><IconButton label="Add image" onClick={() => sendSpecial("image")}><Image size={19} /></IconButton><IconButton label="Share location" onClick={() => sendSpecial("location")}><MapPin size={19} /></IconButton></div><div className="composer-input"><input value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send()} placeholder="Message Brian…" aria-label="Message" /><Smile size={19} /></div>{text ? <IconButton label="Send message" className="send-button" onClick={send}><Send size={18} /></IconButton> : <IconButton label="Record voice note" className="send-button" onClick={() => sendSpecial("voice")}><Mic size={19} /></IconButton>}</div>
+    <div className="chat-composer"><div className="composer-tools"><IconButton label="Add image" onClick={() => sendSpecial("image")}><Image size={19} /></IconButton><IconButton label="Share location" onClick={() => sendSpecial("location")}><MapPin size={19} /></IconButton></div><div className="composer-input"><input value={text} onChange={(e) => setText(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send()} placeholder={`Message ${recipientName}…`} aria-label="Message" /><Smile size={19} /></div>{text ? <IconButton label="Send message" className="send-button" onClick={send}><Send size={18} /></IconButton> : <IconButton label="Record voice note" className="send-button" onClick={() => sendSpecial("voice")}><Mic size={19} /></IconButton>}</div>
   </div>;
 }
